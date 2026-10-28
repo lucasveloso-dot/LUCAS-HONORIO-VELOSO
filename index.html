@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salgados da Helena - Tradicional e Feito com Amor</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#FAF4ED',
+              card: '#F4EADF',
+              cardLight: '#FAF0E6',
+              red: '#A91D22',
+              redHover: '#8A151A',
+              green: '#1E4333',
+              dark: '#2C221E',
+              muted: '#665A52',
+              pillBorder: '#E6D7C3'
+            }
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  
+  <style>
+    body {
+      background-color: #FAF4ED;
+      color: #2C221E;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* =========================================================
+       1. CARROSSEL HORIZONTAL (AULA07.HTML)
+       ========================================================= */
+    .slider-wrapper {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      border-radius: 1.5rem;
+      border: 1px solid #E6D7C3;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+    .slider-track {
+      display: flex;
+      width: 400%;
+      height: 100%;
+      animation: autoSlide 14s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+    }
+    .slider-wrapper:hover .slider-track {
+      animation-play-state: paused;
+    }
+    .slide-img {
+      width: 25%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    @keyframes autoSlide {
+      0%, 20% { transform: translateX(0%); }
+      25%, 45% { transform: translateX(-25%); }
+      50%, 70% { transform: translateX(-50%); }
+      75%, 95% { transform: translateX(-75%); }
+      100% { transform: translateX(0%); }
+    }
+
+    /* =========================================================
+       2. FLIP CARDS 3D (07.HTML)
+       ========================================================= */
+    .card-container {
+      perspective: 1000px;
+      height: 340px;
+    }
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      transform-style: preserve-3d;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 20px rgba(44, 34, 30, 0.08);
+      cursor: pointer;
+    }
+    .card-container:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+    .card-front {
+      background-color: #F4EADF;
+      border: 1px solid #E6D7C3;
+    }
+    .card-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .card-front-title {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px;
+      background: linear-gradient(transparent, rgba(44, 34, 30, 0.85));
+      color: #FFF;
+    }
+    .card-back {
+      background: #2C221E;
+      color: #FAF4ED;
+      border: 2px solid #A91D22;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      text-align: center;
+      transform: rotateY(180deg);
+    }
+
+    /* =========================================================
+       3. GALERIA LIGHTBOX CSS (0007.HTML)
+       ========================================================= */
+    .lightbox {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 9999;
+    }
+    .lightbox:target {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .lightbox-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: scale(0.8);
+      transition: transform 0.4s ease;
+    }
+    .lightbox:target .lightbox-content {
+      transform: scale(1);
+    }
+    .lightbox-content img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      object-fit: contain;
+    }
+    .close-btn {
+      position: absolute;
+      top: -45px;
+      right: 0;
+      color: #fff;
+      font-size: 2.2rem;
+      text-decoration: none;
+      font-weight: bold;
+      line-height: 1;
+      transition: color 0.2s ease;
+    }
+    .close-btn:hover {
+      color: #A91D22;
+    }
+    .lightbox-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body class="pb-24 md:pb-0">
+
+  <!-- Header / Navbar -->
+  <header class="bg-brand-cream border-b border-brand-pillBorder/50 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <div class="w-10 h-10 rounded-full border-2 border-brand-green flex items-center justify-center bg-white p-1">
+          <i class="fa-solid fa-wheat-awn text-brand-green text-xl"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif font-bold text-brand-green leading-none text-lg">Helena</span>
+          <span class="text-[9px] tracking-widest text-brand-green font-semibold uppercase">ARTESANAIS</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-3">
+        <button aria-label="Carrinho" class="w-9 h-9 rounded-full bg-brand-green text-white flex items-center justify-center relative hover:bg-brand-green/90 transition-colors">
+          <i class="fa-solid fa-bag-shopping text-sm"></i>
+          <span class="absolute -top-1 -right-1 bg-brand-red text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+        </button>
+        <button aria-label="Perfil do utilizador" class="w-9 h-9 rounded-full bg-brand-green text-white flex items-center justify-center hover:bg-brand-green/90 transition-colors">
+          <i class="fa-solid fa-user text-sm"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-6 space-y-12">
+
+    <!-- HERO SECTION COM CARROSSEL HORIZONTAL (AULA07.HTML INTEGRADO) -->
+    <section class="text-center space-y-6">
+      <div class="inline-flex items-center gap-2 bg-brand-card/80 border border-brand-pillBorder px-4 py-1.5 rounded-full text-xs font-semibold text-brand-muted">
+        <i class="fa-solid fa-star text-brand-red text-[10px]"></i>
+        <span>Sabor de Família • Feito com Amor</span>
+      </div>
+
+      <h1 class="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-brand-dark leading-tight px-2">
+        Salgados de festa artesanais que transformam a sua celebração num momento inesquecível
+      </h1>
+
+      <p class="text-brand-muted text-sm md:text-base leading-relaxed max-w-2xl mx-auto">
+        Receita de família tradicional, massa crocante e sequinha por fora, recheio farto e suculento por dentro. Perfeitos para aniversários, empresas e encontros especiais.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <a href="#agendamento" class="w-full sm:w-auto bg-brand-red hover:bg-brand-redHover text-white font-bold py-3.5 px-8 rounded-2xl flex items-center justify-center gap-2 shadow-md transition-all">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>Encomendar Agora</span>
+        </a>
+        <a href="#servicos" class="w-full sm:w-auto bg-brand-card border border-brand-pillBorder hover:bg-brand-card/70 text-brand-dark font-semibold py-3.5 px-6 rounded-2xl flex items-center justify-center gap-2 transition-all">
+          <i class="fa-regular fa-file-lines"></i>
+          <span>Ver Cardápio & Preços</span>
+        </a>
+      </div>
+
+      <!-- CARROSSEL HORIZONTAL DE IMAGENS REAIS -->
+      <div class="relative pt-4">
+        <div class="slider-wrapper">
+          <div class="slider-track">
+            <img class="slide-img" src="aula 0710/img/kit festa.jpg" alt="Salgados Fritos da Helena">
+            <img class="slide-img" src="aula 0710/img/coxinhas mini.jpg" alt="Risoles de Presunto e Queijo">
+            <img class="slide-img" src="aula 0710/img/enrolado de salsicha.jpg" alt="Pão de Queijo Recheado">
+            <img class="slide-img" src="aula 0710/img/esfira de carne.webp" alt="Esfiha de Carne Assada">
+          </div>
+        </div>
+        
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/95 backdrop-blur px-5 py-2 rounded-full border border-brand-pillBorder shadow-md flex items-center gap-2 z-10">
+          <i class="fa-regular fa-clock text-brand-muted text-sm"></i>
+          <span class="text-xs font-semibold text-brand-dark">Passe o rato para pausar a apresentação</span>
+        </div>
+      </div>
+
+      <!-- Stats Bar -->
+      <div class="grid grid-cols-3 gap-2 md:gap-4 pt-2">
+        <div class="bg-brand-card/60 border border-brand-pillBorder p-3 rounded-2xl text-center">
+          <div class="text-brand-red mb-1"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <p class="font-bold text-xs md:text-sm text-brand-dark">+15.000</p>
+          <p class="text-[10px] md:text-xs text-brand-muted leading-tight">Festas servidas</p>
+        </div>
+        <div class="bg-brand-card/60 border border-brand-pillBorder p-3 rounded-2xl text-center">
+          <div class="text-brand-red mb-1"><i class="fa-solid fa-fire"></i></div>
+          <p class="font-bold text-xs md:text-sm text-brand-dark">Quentinhos</p>
+          <p class="text-[10px] md:text-xs text-brand-muted leading-tight">Fritos na hora</p>
+        </div>
+        <div class="bg-brand-card/60 border border-brand-pillBorder p-3 rounded-2xl text-center">
+          <div class="text-brand-red mb-1"><i class="fa-solid fa-award"></i></div>
+          <p class="font-bold text-xs md:text-sm text-brand-dark">100% Puros</p>
+          <p class="text-[10px] md:text-xs text-brand-muted leading-tight">Ingredientes nobres</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- História -->
+    <section class="space-y-6 pt-4">
+      <div class="text-center">
+        <span class="bg-brand-card/90 border border-brand-pillBorder px-3 py-1 rounded-full text-xs font-medium text-brand-muted">
+          Receita de Família
+        </span>
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-brand-dark mt-2">
+          A Nossa História & Tradição Familiar
+        </h2>
+      </div>
+
+      <div class="space-y-4 text-brand-muted text-sm leading-relaxed">
+        <p>
+          <strong class="text-brand-dark font-semibold">SOU HELENA</strong>, herdeira de uma receita de família: uma massa de salgados de festa maravilhosa. Com isso, comecei a vender os meus salgados para os meus parentes e amigos.
+        </p>
+        <p>
+          Com todos os elogios que recebia na época, decidi vender os meus próprios salgados de festa — vendia para escolas, empresas e pessoas que queriam comer um salgado maravilhoso. Com o tempo, aprimorei a minha receita com todo o cuidado, mantendo aquele sabor afetivo inconfundível.
+        </p>
+      </div>
+    </section>
+
+    <!-- CARDÁPIO COM FLIP CARDS 3D (07.HTML INTEGRADO) -->
+    <section id="servicos" class="space-y-6 pt-4 scroll-mt-20">
+      <div class="text-center">
+        <span class="bg-brand-card/90 border border-brand-pillBorder px-3 py-1 rounded-full text-xs font-medium text-brand-muted">
+          Passe o rato ou toque no cartão
+        </span>
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-brand-dark mt-2">
+          Cardápio & Valores Especiais
+        </h2>
+        <p class="text-xs md:text-sm text-brand-muted mt-1">
+          Interaja com os cartões 3D para ver recheios, detalhes e fazer o seu pedido.
+        </p>
+      </div>
+
+      <!-- Grelha de Flip Cards 3D -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- CARD 1: RISOLES DE PRESUNTO E QUEIJO -->
+        <div class="card-container">
+          <div class="card-inner">
+            <div class="card-front">
+              <img src="aula 0710/img/risole de presunto.webp" alt="Risoles de Presunto e Queijo">
+              <div class="card-front-title">
+                <h3 class="font-serif font-bold text-base">Risoles de Presunto e Queijo</h3>
+                <p class="text-[11px] opacity-90">Salgado Frito • Passe o rato</p>
+              </div>
+            </div>
+            <div class="card-back">
+              <h3 class="font-serif font-bold text-lg text-amber-400 mb-1">R$ 2,30 / un</h3>
+              <p class="text-xs text-stone-300 mb-4 leading-relaxed">
+                Massa leve e recheio generoso de queijo derretido com presunto fatiado. <br>
+                <span class="text-amber-200 font-semibold">(Pedido mínimo: 10 un)</span>
+              </p>
+              <a href="#agendamento" class="bg-brand-red hover:bg-brand-redHover text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors">
+                Encomendar Risoles
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: PÃO DE QUEIJO -->
+        <div class="card-container">
+          <div class="card-inner">
+            <div class="card-front">
+              <img src="aula 0710/img/pao de queijo.jpg" alt="Pão de Queijo">
+              <div class="card-front-title">
+                <h3 class="font-serif font-bold text-base">Pão de Queijo</h3>
+                <p class="text-[11px] opacity-90">Especial Assado • Passe o rato</p>
+              </div>
+            </div>
+            <div class="card-back">
+              <h3 class="font-serif font-bold text-lg text-amber-400 mb-1">R$ 2,90 / un</h3>
+              <p class="text-xs text-stone-300 mb-4 leading-relaxed">
+                Tradicional receita de Minas, fofinho por dentro e levemente crocante por fora. <br>
+                <span class="text-amber-200 font-semibold">(Pedido mínimo: 10 un)</span>
+              </p>
+              <a href="#agendamento" class="bg-brand-red hover:bg-brand-redHover text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors">
+                Encomendar Pão de Queijo
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: ESFIHA DE CARNE -->
+        <div class="card-container">
+          <div class="card-inner">
+            <div class="card-front">
+              <img src="aula 0710/img/esfira de carne.webp" alt="Esfiha de Carne">
+              <div class="card-front-title">
+                <h3 class="font-serif font-bold text-base">Esfiha de Carne</h3>
+                <p class="text-[11px] opacity-90">Especial Assado • Passe o rato</p>
+              </div>
+            </div>
+            <div class="card-back">
+              <h3 class="font-serif font-bold text-lg text-amber-400 mb-1">R$ 3,00 / un</h3>
+              <p class="text-xs text-stone-300 mb-4 leading-relaxed">
+                Carne moida temperada com especiarias naturais e limão fresco. <br>
+                <span class="text-amber-200 font-semibold">(Pedido mínimo: 10 un)</span>
+              </p>
+              <a href="#agendamento" class="bg-brand-red hover:bg-brand-redHover text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors">
+                Encomendar Esfiha
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: KIT FESTA -->
+        <div class="card-container">
+          <div class="card-inner">
+            <div class="card-front">
+              <img src="aula 0710/img/kit festa.jpg" alt="Kit Festa Completo">
+              <div class="card-front-title">
+                <h3 class="font-serif font-bold text-base">Kit Festa (10 Pessoas)</h3>
+                <p class="text-[11px] opacity-90">Combo Completo • Passe o rato</p>
+              </div>
+            </div>
+            <div class="card-back">
+              <h3 class="font-serif font-bold text-lg text-amber-400 mb-1">R$ 409,90</h3>
+              <p class="text-xs text-stone-300 mb-4 leading-relaxed">
+                Combo variado com salgados fritos, assados e bebidas. Ideal para pequenas reuniões.
+              </p>
+              <a href="#agendamento" class="bg-brand-red hover:bg-brand-redHover text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors">
+                Reservar Combo
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GALERIA COM LIGHTBOX 100% CSS (0007.HTML INTEGRADO) -->
+    <section id="galeria" class="space-y-6 pt-4">
+      <div class="text-center">
+        <span class="bg-brand-card/90 border border-brand-pillBorder px-3 py-1 rounded-full text-xs font-medium text-brand-muted">
+          Clique na foto para ampliar
+        </span>
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-brand-dark mt-2">
+          Galeria de Delícias
+        </h2>
+      </div>
+
+      <!-- Grid de Fotos com links para Lightbox -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+        
+        <a href="#img1" class="bg-brand-card/40 border border-brand-pillBorder rounded-2xl overflow-hidden group shadow-sm block">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <img src="aula 0710/img/coxinha.jpg" alt="Coxinha com Catupiry" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <span class="absolute top-2 left-2 bg-brand-red text-white text-[10px] font-bold px-2 py-0.5 rounded-full">O Favorito</span>
+          </div>
+          <div class="p-3">
+            <h4 class="font-bold text-sm text-brand-dark">Coxinha de Frango</h4>
+            <p class="text-[11px] text-brand-muted mt-0.5">Clique para ampliar</p>
+          </div>
+        </a>
+
+        <a href="#img2" class="bg-brand-card/40 border border-brand-pillBorder rounded-2xl overflow-hidden group shadow-sm block">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <img src="aula 0710/img/risole de presunto.webp" alt="Risoles de Presunto e Queijo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <span class="absolute top-2 left-2 bg-amber-700 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">R$ 2,30</span>
+          </div>
+          <div class="p-3">
+            <h4 class="font-bold text-sm text-brand-dark">Risoles Presunto & Queijo</h4>
+            <p class="text-[11px] text-brand-muted mt-0.5">Clique para ampliar</p>
+          </div>
+        </a>
+
+        <a href="#img3" class="bg-brand-card/40 border border-brand-pillBorder rounded-2xl overflow-hidden group shadow-sm block">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <img src="aula 0710/img/pao de queijo.jpg" alt="Pão de Queijo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <span class="absolute top-2 left-2 bg-amber-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">R$ 2,90</span>
+          </div>
+          <div class="p-3">
+            <h4 class="font-bold text-sm text-brand-dark">Pão de Queijo</h4>
+            <p class="text-[11px] text-brand-muted mt-0.5">Clique para ampliar</p>
+          </div>
+        </a>
+
+        <a href="#img4" class="bg-brand-card/40 border border-brand-pillBorder rounded-2xl overflow-hidden group shadow-sm block">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <img src="aula 0710/img/esfira de carne.webp" alt="Esfiha de Carne" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <span class="absolute top-2 left-2 bg-brand-green text-white text-[10px] font-bold px-2 py-0.5 rounded-full">R$ 3,00</span>
+          </div>
+          <div class="p-3">
+            <h4 class="font-bold text-sm text-brand-dark">Esfiha de Carne</h4>
+            <p class="text-[11px] text-brand-muted mt-0.5">Clique para ampliar</p>
+          </div>
+        </a>
+
+        <a href="#img5" class="bg-brand-card/40 border border-brand-pillBorder rounded-2xl overflow-hidden group shadow-sm block">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <img src="aula 0710/img/bolinha de queijo.jpg" alt="Bolinha de Queijo" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <span class="absolute top-2 left-2 bg-brand-red text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Crocante</span>
+          </div>
+          <div class="p-3">
+            <h4 class="font-bold text-sm text-brand-dark">Bolinha de Queijo</h4>
+            <p class="text-[11px] text-brand-muted mt-0.5">Clique para ampliar</p>
+          </div>
+        </a>
+
+        <a href="#img6" class="bg-brand-card/40 border border-brand-pillBorder rounded-2xl overflow-hidden group shadow-sm block">
+          <div class="relative h-36 md:h-44 overflow-hidden">
+            <img src="aula 0710/img/enrolado de salsicha.jpg" alt="Mini Enroladinho" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <span class="absolute top-2 left-2 bg-amber-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Festa Infantil</span>
+          </div>
+          <div class="p-3">
+            <h4 class="font-bold text-sm text-brand-dark">Mini Enroladinho</h4>
+            <p class="text-[11px] text-brand-muted mt-0.5">Clique para ampliar</p>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ESTRUTURA DOS MODAIS LIGHTBOX (TARGET CSS) -->
+    <div class="lightbox" id="img1">
+      <a href="#galeria" class="lightbox-overlay"></a>
+      <div class="lightbox-content">
+        <a href="#galeria" class="close-btn">&times;</a>
+        <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=1200&q=80" alt="Coxinha de Frango Ampliada">
+      </div>
+    </div>
+
+    <div class="lightbox" id="img2">
+      <a href="#galeria" class="lightbox-overlay"></a>
+      <div class="lightbox-content">
+        <a href="#galeria" class="close-btn">&times;</a>
+        <img src="https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?auto=format&fit=crop&w=1200&q=80" alt="Risoles Presunto e Queijo Ampliado">
+      </div>
+    </div>
+
+    <div class="lightbox" id="img3">
+      <a href="#galeria" class="lightbox-overlay"></a>
+      <div class="lightbox-content">
+        <a href="#galeria" class="close-btn">&times;</a>
+        <img src="https://images.unsplash.com/photo-1608039829572-78524f79c4c7?auto=format&fit=crop&w=1200&q=80" alt="Pão de Queijo Ampliado">
+      </div>
+    </div>
+
+    <div class="lightbox" id="img4">
+      <a href="#galeria" class="lightbox-overlay"></a>
+      <div class="lightbox-content">
+        <a href="#galeria" class="close-btn">&times;</a>
+        <img src="https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=1200&q=80" alt="Esfiha de Carne Ampliada">
+      </div>
+    </div>
+
+    <div class="lightbox" id="img5">
+      <a href="#galeria" class="lightbox-overlay"></a>
+      <div class="lightbox-content">
+        <a href="#galeria" class="close-btn">&times;</a>
+        <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1200&q=80" alt="Bolinha de Queijo Ampliada">
+      </div>
+    </div>
+
+    <div class="lightbox" id="img6">
+      <a href="#galeria" class="lightbox-overlay"></a>
+      <div class="lightbox-content">
+        <a href="#galeria" class="close-btn">&times;</a>
+        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=1200&q=80" alt="Mini Enroladinho Ampliado">
+      </div>
+    </div>
+
+    <!-- Booking / Form Section -->
+    <section id="agendamento" class="space-y-6 pt-4 scroll-mt-20">
+      <div class="text-center">
+        <span class="bg-brand-card/90 border border-brand-pillBorder px-3 py-1 rounded-full text-xs font-medium text-brand-muted">
+          Agendamento Exclusivo
+        </span>
+        <h2 class="font-serif text-2xl md:text-3xl font-bold text-brand-dark mt-2">
+          Faça o seu Pedido
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-brand-card/50 border border-brand-pillBorder p-5 rounded-3xl space-y-5 h-full">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-brand-card border border-brand-pillBorder flex items-center justify-center text-brand-dark shrink-0 mt-0.5">
+              <i class="fa-solid fa-location-dot text-xs"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-xs text-brand-dark uppercase tracking-wider">Endereço da Cozinha Central</h4>
+              <p class="text-xs text-brand-muted mt-1">Rua das Laranjeiras, 342 - Bairro das Flores, São Paulo - SP</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-full bg-brand-card border border-brand-pillBorder flex items-center justify-center text-brand-dark shrink-0 mt-0.5">
+              <i class="fa-regular fa-clock text-xs"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-xs text-brand-dark uppercase tracking-wider">Horário de Funcionamento</h4>
+              <p class="text-xs text-brand-muted mt-1">Segunda a Sábado: 08h às 19h</p>
+              <p class="text-xs text-brand-muted">Domingos & Feriados: 08h às 13h</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-brand-card/60 border border-brand-pillBorder p-6 rounded-3xl space-y-4">
+          <form onsubmit="alert('Obrigado! O seu pedido foi enviado com sucesso. Entraremos em contacto via WhatsApp em breve.'); return false;" class="space-y-3">
+            <div>
+              <label for="nome" class="block text-[11px] font-semibold text-brand-dark mb-1">Nome Completo</label>
+              <input type="text" id="nome" placeholder="Ex. Maria Silva" required class="w-full bg-white border border-brand-pillBorder rounded-xl px-3 py-2 text-xs text-brand-dark">
+            </div>
+
+            <div>
+              <label for="telefone" class="block text-[11px] font-semibold text-brand-dark mb-1">WhatsApp / Telefone</label>
+              <input type="tel" id="telefone" placeholder="(11) 99999-9999" required class="w-full bg-white border border-brand-pillBorder rounded-xl px-3 py-2 text-xs text-brand-dark">
+            </div>
+
+            <div>
+              <label for="servico" class="block text-[11px] font-semibold text-brand-dark mb-1">Escolha o seu Pedido</label>
+              <select id="servico" class="w-full bg-white border border-brand-pillBorder rounded-xl px-3 py-2 text-xs text-brand-dark">
+                <option value="risoles">Risoles Presunto e Queijo (R$ 2,30/un)</option>
+                <option value="pao-queijo">Pão de Queijo (R$ 2,90/un)</option>
+                <option value="esfiha">Esfiha de Carne (R$ 3,00/un)</option>
+                <option value="kit10">Kit Festa Completo (R$ 409,90)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="w-full bg-brand-red hover:bg-brand-redHover text-white font-bold py-3 px-4 rounded-xl shadow-md transition-all text-xs">
+              Enviar Pedido via WhatsApp
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-brand-pillBorder bg-brand-cream mt-12 py-8 px-4 text-center space-y-4">
+    <p class="text-xs text-brand-muted">
+      © 2026 Salgados da Helena. Feito com amor.
+    </p>
+  </footer>
+
+  <!-- Fixed Bottom Navigation (Mobile Only) -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t border-brand-pillBorder px-6 py-3 flex items-center justify-between z-50">
+    <a href="#" class="flex flex-col items-center text-brand-red">
+      <i class="fa-solid fa-house text-sm mb-1"></i>
+      <span class="text-[9px] font-bold">Início</span>
+    </a>
+    <a href="#servicos" class="flex flex-col items-center text-brand-muted">
+      <i class="fa-solid fa-utensils text-sm mb-1"></i>
+      <span class="text-[9px] font-medium">Cardápio</span>
+    </a>
+    <a href="#galeria" class="flex flex-col items-center text-brand-muted">
+      <i class="fa-solid fa-image text-sm mb-1"></i>
+      <span class="text-[9px] font-medium">Galeria</span>
+    </a>
+    <a href="#agendamento" class="flex flex-col items-center text-brand-muted">
+      <i class="fa-regular fa-comment text-sm mb-1"></i>
+      <span class="text-[9px] font-medium">Contato</span>
+    </a>
+  </div>
+
+</body>
+</html>
